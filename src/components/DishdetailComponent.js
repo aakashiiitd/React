@@ -4,13 +4,14 @@ import { Card, CardImg, CardText, CardBody, CardTitle, Breadcrumb, BreadcrumbIte
 import { Link } from 'react-router-dom';
 import { Control, LocalForm, Errors } from 'react-redux-form';
 import { Loading } from './LoadingComponent';
+import { baseUrl } from '../shared/baseUrl';
 
     function RenderDish({dish}) {
        
             return (
                     <div className="col-12 col-md-5 m-1">
                         <Card>
-                            <CardImg width="100%" src={dish.image} alt={dish.name} />
+                            <CardImg width="100%" src={baseUrl + dish.image} alt={dish.name} />
                             <CardBody>
                                 <CardTitle>{dish.name}</CardTitle>
                                 <CardText>{dish.description}</CardText>
@@ -21,7 +22,7 @@ import { Loading } from './LoadingComponent';
         
     }
 
-    function RenderComments({dishComments, addComment, dishId}) {
+    function RenderComments({dishComments, postComment, dishId}) {
         const comments = dishComments.map((comment) => {
             return (
                 <li>
@@ -37,7 +38,7 @@ import { Loading } from './LoadingComponent';
                     <ul className="list-unstyled">
                         {comments}
                     </ul>
-                    <CommentForm dishId={dishId} addComment={addComment} />
+                    <CommentForm dishId={dishId} postComment={postComment} />
                 </div>
             )
         else return (
@@ -64,7 +65,7 @@ class CommentForm  extends React.Component {
     }
     handleSubmit(event) {
         this.toggleModal();
-        this.props.addComment(this.props.dishId, event.rating, event.name, event.comment);
+        this.props.postComment(this.props.dishId, event.rating, event.name, event.comment);
     }
 
     render(){
@@ -80,11 +81,11 @@ class CommentForm  extends React.Component {
                                 <Col>
                                     <Control.select model=".rating" id="rating" name='rating'
                                         className="form-control">
-                                        <option value="one">1</option>
-                                        <option value="two">2</option>
-                                        <option value="three">3</option>
-                                        <option value="four">4</option>
-                                        <option value="five">5</option>
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
                                     </Control.select>
                                 </Col>
                             </Row>
@@ -159,7 +160,7 @@ class CommentForm  extends React.Component {
 	                </div>
 	                <div className="row">
 	            		<RenderDish dish={props.dish} />
-	            		<RenderComments dishComments={props.comments} addComment={props.addComment} dishId={props.dish.id} />
+	            		<RenderComments dishComments={props.comments} postComment={props.postComment} dishId={props.dish.id} />
 
 	            	</div>
 	        	</div>
